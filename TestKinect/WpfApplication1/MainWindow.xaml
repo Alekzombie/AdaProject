@@ -11,16 +11,15 @@
         <Button x:Name="btnstream" Content="Empezar" HorizontalAlignment="Left" Margin="14,12,0,0" VerticalAlignment="Top" Width="75" Click="btnstream_Click"/>
         <Label x:Name="lbStatus" Content="Label" HorizontalAlignment="Left" Margin="94,1,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbConexionID" Content="Label" HorizontalAlignment="Left" Margin="95,16,0,0" VerticalAlignment="Top"/>
-        <Border x:Name="CanvasBorderWalala" BorderBrush="Black" Margin="397,48,391,232">
-            <Canvas x:Name="canvas" Margin="0,0,277,167" >
-            <Ellipse x:Name="elipseManoIzq" Fill="#FFFF6007" Height="25" Canvas.Left="76" Stroke="Black" Canvas.Top="140" Width="25"/>
-            <Ellipse x:Name="elipseManoDer" Fill="#FF07FF13" Height="20" Canvas.Left="324" Stroke="Black" Canvas.Top="140" Width="21"/>
-            <Ellipse x:Name="elipseCabeza" Fill="#FF5C5CE7"  Height="22" Margin="100,78,0,0" Stroke="Black" VerticalAlignment="Top" Width="22"/>
-        </Canvas>
-            </Border>
-        <Label x:Name="lbSkel_Mi" Content="Label" HorizontalAlignment="Left" Margin="468,-6,0,0" VerticalAlignment="Top" FontSize="28" Height="51"/>
-        <Label x:Name="lbSkel_Md" Content="Label" HorizontalAlignment="Left" Margin="468,45,0,0" VerticalAlignment="Top" FontSize="28" Height="51"/>
-        <Label x:Name="absoluto" Content="Label" HorizontalAlignment="Left" Margin="397,473,0,0" VerticalAlignment="Top" FontSize="28" Height="51"/>
+        <Border x:Name="CanvasBorderWalala" BorderBrush="Black" Margin="397,47,95,5.8" Width="640" Height="480">
+            <Canvas x:Name="canvas" Margin="0,0,176,130" >
+                <Ellipse x:Name="elipseManoIzq" Fill="#FFFF6007" Height="25" Canvas.Left="76" Stroke="Black" Canvas.Top="140" Width="25"/>
+                <Ellipse x:Name="elipseManoDer" Fill="#FF07FF13" Height="20" Canvas.Left="324" Stroke="Black" Canvas.Top="140" Width="21"/>
+                <Ellipse x:Name="elipseCabeza" Fill="#FF5C5CE7"  Height="22" Margin="100,78,0,0" Stroke="Black" VerticalAlignment="Top" Width="22"/>
+            </Canvas>
+        </Border>
+        <Label x:Name="lbSkel" Content="Label" HorizontalAlignment="Left" Margin="468,-6,0,0" VerticalAlignment="Top" FontSize="28" Height="51"/>
+        <Image x:Name="posicion" HorizontalAlignment="Left" Height="227" Margin="14,273,0,0" VerticalAlignment="Top" Width="383"/>
     </Grid>
 
 </Window>

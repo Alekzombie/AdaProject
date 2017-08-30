@@ -25,9 +25,14 @@ namespace WpfApplication1
     public partial class MainWindow : Window
     {
         private KinectSensor sensor;
+        List<BitmapImage> images = new List<BitmapImage>();
 
         public MainWindow()
         {
+
+            images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/up.png", AppDomain.CurrentDomain.BaseDirectory))));
+            images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/sentado.png", AppDomain.CurrentDomain.BaseDirectory))));
+
             InitializeComponent();
 
             //KinectSensor sensor = KinectSensor.KinectSensors[0];
@@ -125,7 +130,7 @@ namespace WpfApplication1
                     sensor.Stop();
                     this.btnstream.Content = "Empezar";
                     this.imagen.Source = null;
-                    
+
                 }
             }
         }
@@ -134,7 +139,7 @@ namespace WpfApplication1
         {
             canvas.Children.Clear();
             Skeleton[] esqueletos = null;
-            using(SkeletonFrame framesEsqueleto = e.OpenSkeletonFrame())
+            using (SkeletonFrame framesEsqueleto = e.OpenSkeletonFrame())
             {
                 if (framesEsqueleto != null)
                 {
@@ -148,12 +153,8 @@ namespace WpfApplication1
             {
                 if (esqueleto.TrackingState == SkeletonTrackingState.Tracked)
                 {
-                    if (esqueleto.ClippedEdges == 0)
-                    {
-                        Console.WriteLine("Colocado perfectamente");
-                    }
 
-                    Joint jointCabeza = esqueleto.Joints[JointType.Head]; 
+                    Joint jointCabeza = esqueleto.Joints[JointType.Head];
                     Joint jointMuñecaIzq = esqueleto.Joints[JointType.WristLeft];
                     Joint jointMuñecaDer = esqueleto.Joints[JointType.WristRight];
                     Joint jointManoIzq = esqueleto.Joints[JointType.HandLeft];
@@ -173,27 +174,6 @@ namespace WpfApplication1
                     Joint jointTobilloDer = esqueleto.Joints[JointType.AnkleRight];
                     Joint jointPieIzq = esqueleto.Joints[JointType.FootLeft];
                     Joint jointPieDer = esqueleto.Joints[JointType.FootRight];
-
-
-                    jointCabeza.ScaleTo(480, 640);
-                    jointMuñecaIzq.ScaleTo(480, 640);
-                    jointMuñecaDer.ScaleTo(480, 640);
-                    jointManoIzq.ScaleTo(480, 640);
-                    jointManoDer.ScaleTo(480, 640);
-                    jointHombroIzq.ScaleTo(480, 640);
-                    jointHombroDer.ScaleTo(480, 640);
-                    jointHombroCentro.ScaleTo(480, 640);
-                    jointCodoIzq.ScaleTo(480, 640);
-                    jointCodoDer.ScaleTo(480, 640);
-                    jointCaderaCent.ScaleTo(480, 640);
-                    jointCaderaIzq.ScaleTo(480, 640);
-                    jointCaderaDer.ScaleTo(480, 640);
-                    jointRodillaIzq.ScaleTo(480, 640);
-                    jointRodillaDer.ScaleTo(480, 640);
-                    jointTobilloDer.ScaleTo(480, 640);
-                    jointPieIzq.ScaleTo(480, 640);
-                    jointTobilloIzq.ScaleTo(480, 640);
-                    jointPieDer.ScaleTo(480, 640);
 
                     SkeletonPoint posicionCabeza = jointCabeza.Position;
                     SkeletonPoint posicionMuñecaIzq = jointMuñecaIzq.Position;
@@ -218,10 +198,6 @@ namespace WpfApplication1
 
                     SolidColorBrush colorRojo = new SolidColorBrush(Colors.Red);
 
-
-                    //Line huesoAntebrazoIzq = new Line();
-                    //huesoAntebrazoIzq.Stroke = colorRojo;
-                    //huesoAntebrazoIzq.StrokeThickness = 3;
                     Hueso huesoMuñecaIzq = new Hueso(2, colorRojo);
                     Hueso huesoMuñecaDer = new Hueso(2, colorRojo);
                     Hueso huesoAntebrazoIzq = new Hueso(2, colorRojo);
@@ -245,8 +221,8 @@ namespace WpfApplication1
 
 
                     ElipseSeteada eliCab = new ElipseSeteada(20, colorRojo);
-                    ElipseSeteada eliManoIzq = new ElipseSeteada(20, colorRojo);
-                    ElipseSeteada eliManoDer = new ElipseSeteada(20, colorRojo);
+                    ElipseSeteada eliManoIzq = new ElipseSeteada(10, colorRojo);
+                    ElipseSeteada eliManoDer = new ElipseSeteada(10, colorRojo);
                     ElipseSeteada eliMuñecaIzq = new ElipseSeteada(10, colorRojo);
                     ElipseSeteada eliMuñecaDer = new ElipseSeteada(10, colorRojo);
                     ElipseSeteada eliHomIzq = new ElipseSeteada(10, colorRojo);
@@ -266,27 +242,26 @@ namespace WpfApplication1
                     ElipseSeteada eliPieDer = new ElipseSeteada(10, colorRojo);
 
 
-
-                    ColorImagePoint puntoCabeza = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCabeza.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoManoIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointManoIzq.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoManoDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointManoDer.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoMuñecaIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointMuñecaIzq.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoMuñecaDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointMuñecaDer.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoHomIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointHombroIzq.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoHomDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointHombroDer.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoHomCent = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointHombroCentro.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoCodoIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCodoIzq.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoCodoDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCodoDer.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoSpine = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointSpine.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoCaderaCent = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCaderaCent.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoCaderaIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCaderaIzq.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoCaderaDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCaderaDer.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoRodillaIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointRodillaIzq.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoRodillaDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointRodillaDer.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoTobilloIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointTobilloIzq.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoTobilloDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointTobilloDer.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoPieIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointPieIzq.Position, ColorImageFormat.RgbResolution640x480Fps30);
-                    ColorImagePoint puntoPieDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointPieDer.Position, ColorImageFormat.RgbResolution640x480Fps30);
+                    ColorImagePoint puntoCabeza = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCabeza.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoManoIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointManoIzq.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoManoDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointManoDer.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoMuñecaIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointMuñecaIzq.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoMuñecaDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointMuñecaDer.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoHomIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointHombroIzq.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoHomDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointHombroDer.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoHomCent = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointHombroCentro.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoCodoIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCodoIzq.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoCodoDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCodoDer.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoSpine = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointSpine.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoCaderaCent = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCaderaCent.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoCaderaIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCaderaIzq.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoCaderaDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointCaderaDer.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoRodillaIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointRodillaIzq.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoRodillaDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointRodillaDer.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoTobilloIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointTobilloIzq.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoTobilloDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointTobilloDer.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoPieIzq = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointPieIzq.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
+                    ColorImagePoint puntoPieDer = sensor.CoordinateMapper.MapSkeletonPointToColorPoint(jointPieDer.Position, ColorImageFormat.RawBayerResolution640x480Fps30);
 
 
                     eliCab.setPosicion(puntoCabeza.X, puntoCabeza.Y);
@@ -309,21 +284,6 @@ namespace WpfApplication1
                     eliTobilloDer.setPosicion(puntoTobilloDer.X, puntoTobilloDer.Y);
                     eliPieIzq.setPosicion(puntoPieIzq.X, puntoPieIzq.Y);
                     eliPieDer.setPosicion(puntoPieDer.X, puntoPieDer.Y);
-
-
-                    //eliCab.miElipse.Margin = new Thickness(puntoCabeza.X, puntoCabeza.Y, 0, 0);
-                    //eliBraIzq.miElipse.Margin = new Thickness(puntoBraIzq.X-eliBraIzq.miElipse.Width/2, puntoBraIzq.Y-eliBraIzq.miElipse.Height, 0, 0);
-                    //eliBraDer.miElipse.Margin = new Thickness(puntoBraDer.X, puntoBraDer.Y, 0, 0);
-                    //eliHomIzq.miElipse.Margin = new Thickness(puntoHomIzq.X, puntoHomIzq.Y, 0, 0);
-                    //eliHomDer.miElipse.Margin = new Thickness(puntoHomDer.X, puntoHomDer.Y, 0, 0);
-                    //eliHomCent.miElipse.Margin = new Thickness(puntoHomCent.X, puntoHomCent.Y, 0, 0);
-                    //eliCodoIzq.miElipse.Margin = new Thickness(puntoCodoIzq.X-eliCodoIzq.miElipse.Width/2, puntoCodoIzq.Y-eliCodoIzq.miElipse.Height/2, 0, 0);
-                    //eliCodoDer.miElipse.Margin = new Thickness(puntoCodoDer.X, puntoCodoDer.Y, 0, 0);
-
-                    //huesoAntebrazoIzq.X1 = puntoBraIzq.X;
-                    //huesoAntebrazoIzq.Y1 = puntoBraIzq.Y;
-                    //huesoAntebrazoIzq.X2 = puntoCodoIzq.X;
-                    //huesoAntebrazoIzq.Y2 = puntoCodoIzq.Y;
                     huesoMuñecaIzq.setPosicionUno(puntoManoIzq.X, puntoManoIzq.Y);
                     huesoMuñecaIzq.setPosicionDos(puntoMuñecaIzq.X, puntoMuñecaIzq.Y);
                     huesoMuñecaDer.setPosicionUno(puntoManoDer.X, puntoManoDer.Y);
@@ -404,18 +364,24 @@ namespace WpfApplication1
                     canvas.Children.Add(huesoPieIzq.linea);
                     canvas.Children.Add(huesoPieDer.linea);
 
+                    Console.WriteLine(((posicionManoDer.Y + posicionManoIzq.Y)/2));
+                    if (((posicionManoIzq.Y + posicionManoDer.Y) / 2) > 0.8)
+                        posicion.Source = images[0];
 
-                    //elipseCabeza.Margin = new Thickness(posicionCabeza.X,posicionCabeza.Y,0,0);
-                   // lbSkel.Content = string.Format("Cabeza: X: {0:0.0}, Y:{1:0.0}, Z{2:0.0}", posicionCabeza.X, posicionCabeza.Y, posicionCabeza.Z);
-                    lbSkel_Mi.Content = string.Format("Mano_Izq: X: {0:0.0}, Y: {1:0.0}, Z: {2:0.0}", posicionManoIzq.X, posicionManoIzq.Y, posicionManoIzq.Z);
-                    lbSkel_Md.Content = string.Format("Mano_Drc: X: {0:0.0}, Y: {1:0.0}, Z: {2:0.0}", posicionManoDer.X, posicionManoDer.Y, posicionManoDer.Z);
-
-                    // sirve para decidir si ambas manos estan arriba
-                    absoluto.Content = string.Format("{0}",Math.Round((posicionManoDer.Y + posicionManoIzq.Y)/2),2);
+                    if (Math.Round((posicionCabeza.Y)) < 0.1)
+                        posicion.Source = images[1];
+                    if (esqueletos[0].ClippedEdges == 0)
+                    {
+                        lbSkel.Content = "Persona 1 Encontrada";
+                    }
+                    else
+                    {
+                        lbSkel.Content = "Persona 1 Vacio";
+                    }
 
                 }
+                
             }
-          
         }
 
         private void Sensor_ColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
