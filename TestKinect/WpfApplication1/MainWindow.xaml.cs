@@ -32,6 +32,11 @@ namespace WpfApplication1
 
             images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/up.png", AppDomain.CurrentDomain.BaseDirectory))));
             images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/sentado.png", AppDomain.CurrentDomain.BaseDirectory))));
+            images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/IJustCantWithMySwag.jpg", AppDomain.CurrentDomain.BaseDirectory))));
+            images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/k.jpg", AppDomain.CurrentDomain.BaseDirectory))));
+            images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/kthxbye.jpg", AppDomain.CurrentDomain.BaseDirectory))));
+            images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/reallyBro.jpg", AppDomain.CurrentDomain.BaseDirectory))));
+
 
             InitializeComponent();
 
@@ -151,8 +156,11 @@ namespace WpfApplication1
             if (esqueletos == null) return;
             foreach (Skeleton esqueleto in esqueletos)
             {
+
                 if (esqueleto.TrackingState == SkeletonTrackingState.Tracked)
                 {
+                    List<SkeletonPoint> spookyScarySkeleton = new List<SkeletonPoint>();
+
 
                     Joint jointCabeza = esqueleto.Joints[JointType.Head];
                     Joint jointMuñecaIzq = esqueleto.Joints[JointType.WristLeft];
@@ -175,7 +183,7 @@ namespace WpfApplication1
                     Joint jointPieIzq = esqueleto.Joints[JointType.FootLeft];
                     Joint jointPieDer = esqueleto.Joints[JointType.FootRight];
 
-                    SkeletonPoint posicionCabeza = jointCabeza.Position;
+                    SkeletonPoint posicionCabeza = jointCabeza.Position;                    
                     SkeletonPoint posicionMuñecaIzq = jointMuñecaIzq.Position;
                     SkeletonPoint posicionMuñecaDer = jointMuñecaDer.Position;
                     SkeletonPoint posicionManoIzq = jointManoIzq.Position;
@@ -195,6 +203,29 @@ namespace WpfApplication1
                     SkeletonPoint posicionTobilloDer = jointTobilloDer.Position;
                     SkeletonPoint posicionPieIzq = jointPieIzq.Position;
                     SkeletonPoint posicionPieDer = jointPieDer.Position;
+
+
+
+                    spookyScarySkeleton.Add(posicionCabeza);
+                    spookyScarySkeleton.Add(posicionMuñecaIzq);
+                    spookyScarySkeleton.Add(posicionMuñecaDer);
+                    spookyScarySkeleton.Add(posicionManoIzq);
+                    spookyScarySkeleton.Add(posicionManoDer);
+                    spookyScarySkeleton.Add(posicionHombroIzq);
+                    spookyScarySkeleton.Add(posicionHombroDer);
+                    spookyScarySkeleton.Add(posicionHombroCentro);
+                    spookyScarySkeleton.Add(posicionCodoIzq);
+                    spookyScarySkeleton.Add(posicionCodoDer);
+                    spookyScarySkeleton.Add(posicionSpine);
+                    spookyScarySkeleton.Add(posicionCaderaCent);
+                    spookyScarySkeleton.Add(posicionCaderaIzq);
+                    spookyScarySkeleton.Add(posicionCaderaDer);
+                    spookyScarySkeleton.Add(posicionRodillaIzq);
+                    spookyScarySkeleton.Add(posicionRodillaDer);
+                    spookyScarySkeleton.Add(posicionTobilloIzq);
+                    spookyScarySkeleton.Add(posicionTobilloDer);
+                    spookyScarySkeleton.Add(posicionPieIzq);
+                    spookyScarySkeleton.Add(posicionPieDer);
 
                     SolidColorBrush colorRojo = new SolidColorBrush(Colors.Red);
 
@@ -370,14 +401,45 @@ namespace WpfApplication1
 
                     if (Math.Round((posicionCabeza.Y)) < 0.1)
                         posicion.Source = images[1];
-                    if (esqueletos[0].ClippedEdges == 0)
+                    
+
+                    lbSkel.Content = string.Format(": X:{0} , Y:{1} , Z:{2}", posicionSpine.X, posicionSpine.Y, posicionSpine.Z);
+
+                    bool leftyEdge;
+                    bool rightyEdge;
+                    bool isClose;
+                    bool isFar;
+
+                    if (posicionSpine.Z < 1.5 )
                     {
-                        lbSkel.Content = "Persona 1 Encontrada";
+                        isClose = true;
+                        isFar = false;
+                        posicion.Source = images[5];
                     }
                     else
                     {
-                        lbSkel.Content = "Persona 1 Vacio";
+                        isClose = false;
+                        isFar = true;
+                        posicion.Source = images[3];
                     }
+                    if (posicionSpine.X < -0.4)
+                    {
+                        leftyEdge = true;
+                        posicion.Source = images[2];
+                    }
+                    else
+                        rightyEdge = false;
+
+                    if (posicionSpine.X > 0.4 )
+                    {
+                        rightyEdge = true;
+                        posicion.Source = images[4];
+                    }
+                        
+                    else
+                        leftyEdge = false;
+
+
 
                 }
                 
