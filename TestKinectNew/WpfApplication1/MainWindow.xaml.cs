@@ -14,8 +14,13 @@ namespace WpfApplication1
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Personas
+        Persona niño;
+        Persona adulto;
+        // Fin Personas
+
         private KinectSensor sensor;
-        List<BitmapImage> images = new List<BitmapImage>();
+
         DrawingGroup drawingGroup;
         DrawingImage imageSource;
         Pen inferredBonePen = new Pen(Brushes.Gray, 1);
@@ -24,14 +29,12 @@ namespace WpfApplication1
         Brush inferredJointBrush = Brushes.Yellow;
         double JointThickness = 3;
 
+        Skeleton[] esqueletos;
+
 
 
         public MainWindow()
         {
-
-            images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/up.png", AppDomain.CurrentDomain.BaseDirectory))));
-            images.Add(new BitmapImage(new Uri(string.Format("{0}/Images/sentado.png", AppDomain.CurrentDomain.BaseDirectory))));
-
             InitializeComponent();
 
         }
@@ -128,9 +131,10 @@ namespace WpfApplication1
             }
         }
 
+        //BORRRARRRR
+        float hmax = 0;
         private void Sensor_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
-            Skeleton[] esqueletos = new Skeleton[0];
             using (SkeletonFrame framesEsqueleto = e.OpenSkeletonFrame())
             {
                 if (framesEsqueleto != null)
@@ -144,12 +148,56 @@ namespace WpfApplication1
             {
                 dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, 320, 240));
                 if (esqueletos == null) return;
-                foreach (Skeleton esqueleto in esqueletos)
+                for (int i = 0; i < esqueletos.Length; i++)
                 {
-                    if (esqueleto.TrackingState == SkeletonTrackingState.Tracked)
+                    if (esqueletos[i].TrackingState == SkeletonTrackingState.Tracked)
                     {
-                        DrawBonesAndJoints(esqueleto, dc);
+                        if (calcularAltura(esqueletos[i]) > 1.5)
+                        {
+                            if (adulto == null)
+                            {
+                                Console.WriteLine("se genera adulto");
+                                adulto = new Persona(i, esqueletos[i], TipoPersona.Adulto);
+                            }
+
+                        }
+                        else
+                        {
+                            if (niño == null)
+                            {
+                                Console.WriteLine("se genera niño");
+                                niño = new Persona(i, esqueletos[i], TipoPersona.Niño);
+                            }
+                        }
                     }
+                    DrawBonesAndJoints(esqueletos[i], dc);
+                    #region foreach esqueletos (hasta el momento no es necesario)
+                    //foreach (Skeleton esqueleto in esqueletos)
+                    //{
+                    //    if (esqueleto.TrackingState == SkeletonTrackingState.Tracked)
+                    //    {
+                    //        DrawBonesAndJoints(esqueleto, dc);
+                    //        if (calcularAltura(esqueleto) > hmax)
+                    //        {
+                    //            hmax = calcularAltura(esqueleto);
+                    //            Console.WriteLine(hmax);
+                    //            if (calcularAltura(esqueleto) < 1)
+                    //            {
+                    //                p2 = new Persona(esqueleto, TipoPersona.Niño);
+                    //                Console.WriteLine("se ha generado niño");
+                    //            }
+                    //            else
+                    //            {
+                    //                p1 = new Persona(esqueleto, TipoPersona.Adulto);
+                    //                Console.WriteLine("se ha generado adulto");
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            Console.WriteLine(hmax);
+                    //        }
+                    // }
+                    #endregion
                     drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, 320, 240));
                 }
             }
@@ -159,9 +207,6 @@ namespace WpfApplication1
         {
             using (var frame = e.OpenColorImageFrame())
             {
-                //imagen.Source = CreateBitmapFromSensor(frame);
-                //  BitmapSource bms = CreateBitmapFromSensor(frame);
-                // imagen.Source=BitmapSource.Create(bms.Width,bms.Height,96,96,PixelFormats.Bgr32,null,)
                 if (frame == null)
                     return;
 
@@ -210,18 +255,12 @@ namespace WpfApplication1
                 Brush drawBrush = null;
 
                 if (joint.TrackingState == JointTrackingState.Tracked)
-                {
                     drawBrush = this.trackedJointBrush;
-                }
                 else if (joint.TrackingState == JointTrackingState.Inferred)
-                {
                     drawBrush = this.inferredJointBrush;
-                }
 
                 if (drawBrush != null)
-                {
                     drawingContext.DrawEllipse(drawBrush, null, this.SkeletonPointToScreen(joint.Position), JointThickness, JointThickness);
-                }
             }
 
         }
@@ -239,6 +278,7 @@ namespace WpfApplication1
             }
 
             Pen drawPen = this.inferredBonePen;
+
             if (jointZero.TrackingState == JointTrackingState.Tracked &&
                 jointOne.TrackingState == JointTrackingState.Tracked)
             {
@@ -246,11 +286,100 @@ namespace WpfApplication1
             }
 
             drawingContext.DrawLine(drawPen, SkeletonPointToScreen(jointZero.Position), SkeletonPointToScreen(jointOne.Position));
+            posicionCerca();
+            posicionSentado();
+            posicionManosArriba();
+            posicionLaterales();
 
+        }
+
+        private float calcularAltura(Skeleton esqueleto)
+        {
+            Joint tobillo = esqueleto.Joints[JointType.AnkleLeft];
+            Joint pecho = esqueleto.Joints[JointType.Head];
+
+            float hx = pecho.Position.Y - tobillo.Position.Y;
+            return hx;
+        }
+        private void posicionSentado()
+        {
+            if (niño != null)
+            {
+                if (esqueletos[niño.id].Joints[JointType.Head].Position.Y < 0)
+                    lblStatusNiño.Content = "Sentado";
+            }
+            if (adulto != null)
+            {
+                if (esqueletos[adulto.id].Joints[JointType.Head].Position.Y < 0)
+                    lblStatusAdulto.Content = "Sentado";
+            }
+        }
+
+        float posjmi = 0;
+        float posjmd = 0;
+        private void posicionManosArriba()
+        {
+            if (niño != null)
+            {
+                posjmd = esqueletos[niño.id].Joints[JointType.HandLeft].Position.Y;
+                posjmd = esqueletos[niño.id].Joints[JointType.HandRight].Position.Y;
+                if (posjmd > 0.7 || posjmi > 0.7)
+                    lblStatusNiño.Content ="Manos arriba";
+            }
+            if (adulto != null)
+            {
+                posjmd = esqueletos[adulto.id].Joints[JointType.HandLeft].Position.Y;
+                posjmd = esqueletos[adulto.id].Joints[JointType.HandRight].Position.Y;
+                if (posjmd > 0.7 || posjmi > 0.7)
+                    lblStatusAdulto.Content = "Manos arriba";
+            }
+
+        }
+
+        private void posicionCerca()
+        {
+            if (niño != null)
+            {
+               if(esqueletos[niño.id].Joints[JointType.Spine].Position.Z < 1.5)
+                    lblStatusNiño.Content = "Cerca";
+                else
+                    lblStatusNiño.Content = "Lejos";
+                
+            }
+
+            if(adulto != null)
+            {
+                if(esqueletos[adulto.id].Joints[JointType.Spine].Position.Z < 1.5)
+                    lblStatusNiño.Content = "Cerca";
+                else
+                    lblStatusAdulto.Content = "Lejos";
+            }
+        }
+
+        public void posicionLaterales()
+        {
+            if(niño != null)
+            {
+                if(esqueletos[niño.id].Joints[JointType.Spine].Position.X < -0.4)
+                    lblStatusNiño.Content = "Por la izquierda";
+
+                if (esqueletos[niño.id].Joints[JointType.Spine].Position.X > 0.4)
+                    lblStatusNiño.Content = "Por la derecha";
+            }
+
+            if(adulto != null)
+            {
+                if (esqueletos[adulto.id].Joints[JointType.Spine].Position.X < -0.4)
+                    lblStatusNiño.Content = "Por la izquierda";
+
+                if (esqueletos[adulto.id].Joints[JointType.Spine].Position.X > 0.4)
+                    lblStatusNiño.Content = "Por la derecha";
+            }
         }
 
         private Point SkeletonPointToScreen(SkeletonPoint skelpoint)
         {
+            // el segundo parametro de MapSkeletonPointToDepthPoint, osea El DepthImageFormat es la resolucion que captura y la que es dibujada en el drawingContext
             DepthImagePoint depthPoint = this.sensor.CoordinateMapper.MapSkeletonPointToDepthPoint(skelpoint, DepthImageFormat.Resolution320x240Fps30);
             return new Point(depthPoint.X, depthPoint.Y);
         }

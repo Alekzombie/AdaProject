@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="562.2" Width="1138.2" Loaded="Window_Loaded" Closing="Window_Closing" ResizeMode="CanMinimize">
+        Title="MainWindow" Height="562.2" Width="759.878" Loaded="Window_Loaded" Closing="Window_Closing" ResizeMode="CanMinimize">
     <Grid Background="#FFF3F3F3">
-        <Image x:Name="imagen" HorizontalAlignment="Left" Height="255" Margin="10,47,0,0" VerticalAlignment="Top" Width="373" OpacityMask="Black"/>
+        <Image x:Name="imagen" HorizontalAlignment="Left" Height="435" Margin="14,84,0,0" VerticalAlignment="Top" Width="540" OpacityMask="Black"/>
         <Button x:Name="btnstream" Content="Empezar" HorizontalAlignment="Left" Margin="14,12,0,0" VerticalAlignment="Top" Width="75" Click="btnstream_Click"/>
         <Label x:Name="lbStatus" Content="Label" HorizontalAlignment="Left" Margin="94,1,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lbConexionID" Content="Label" HorizontalAlignment="Left" Margin="95,16,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lbSkel" Content="Label" HorizontalAlignment="Left" Margin="468,-6,0,0" VerticalAlignment="Top" FontSize="28" Height="51"/>
-        <Image x:Name="posicion" HorizontalAlignment="Left" Height="198" Margin="14,302,0,0" VerticalAlignment="Top" Width="383" Stretch="Fill"/>
-        <Image x:Name="image" Margin="383,50,419,237"/>
+        <Image x:Name="image" Margin="14,89,371,296"/>
+        <Label x:Name="lblAdulto" Content="Estado Adulto:" HorizontalAlignment="Left" Margin="559,211,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Width="185"/>
+        <Label x:Name="lblNiño" Content="Estado Niño:" HorizontalAlignment="Left" Margin="559,89,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Width="185"/>
+        <Label x:Name="lblStatusNiño" Content="Label" HorizontalAlignment="Left" Margin="559,136,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <Label x:Name="lblStatusAdulto" Content="Label" HorizontalAlignment="Left" Margin="559,258,0,0" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="2.599,2.576"/>
     </Grid>
 
 </Window>

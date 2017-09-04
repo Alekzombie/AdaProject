@@ -405,39 +405,39 @@ namespace WpfApplication1
 
                     lbSkel.Content = string.Format(": X:{0} , Y:{1} , Z:{2}", posicionSpine.X, posicionSpine.Y, posicionSpine.Z);
 
-                    bool leftyEdge;
-                    bool rightyEdge;
-                    bool isClose;
-                    bool isFar;
+                    //bool leftyEdge;
+                    //bool rightyEdge;
+                    //bool isClose;
+                    //bool isFar;
 
-                    if (posicionSpine.Z < 1.5 )
-                    {
-                        isClose = true;
-                        isFar = false;
-                        posicion.Source = images[5];
-                    }
-                    else
-                    {
-                        isClose = false;
-                        isFar = true;
-                        posicion.Source = images[3];
-                    }
-                    if (posicionSpine.X < -0.4)
-                    {
-                        leftyEdge = true;
-                        posicion.Source = images[2];
-                    }
-                    else
-                        rightyEdge = false;
+                    //if (posicionSpine.Z < 1.5 )
+                    //{
+                    //    isClose = true;
+                    //    isFar = false;
+                    //    posicion.Source = images[5];
+                    //}
+                    //else
+                    //{
+                    //    isClose = false;
+                    //    isFar = true;
+                    //    posicion.Source = images[3];
+                    //}
+                    //if (posicionSpine.X < -0.4)
+                    //{
+                    //    leftyEdge = true;
+                    //    posicion.Source = images[2];
+                    //}
+                    //else
+                    //    rightyEdge = false;
 
-                    if (posicionSpine.X > 0.4 )
-                    {
-                        rightyEdge = true;
-                        posicion.Source = images[4];
-                    }
+                    //if (posicionSpine.X > 0.4 )
+                    //{
+                    //    rightyEdge = true;
+                    //    posicion.Source = images[4];
+                    //}
                         
-                    else
-                        leftyEdge = false;
+                    //else
+                    //    leftyEdge = false;
 
 
 
